@@ -1,0 +1,20 @@
+workflows:
+  android-apk:
+    name: Build Android APK
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    scripts:
+      - name: Extract zip file
+        script: |
+          unzip -o lmHdthzip.zip
+          if [ -d "lmHdth" ]; then cp -r lmHdth/* .; fi
+      - name: Install dependencies
+        script: |
+          pnpm install || npm install
+      - name: Build APK with EAS
+        script: |
+          npx eas-cli build --platform android --profile preview --non-interactive
+    artifacts:
+      - build/**/*.apk
+      - "*.apk"
+      
