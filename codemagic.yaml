@@ -11,10 +11,12 @@ workflows:
       - name: Install dependencies
         script: |
           pnpm install || npm install
-      - name: Build APK with EAS
+      - name: Generate Android project
         script: |
-          npx eas-cli build --platform android --profile preview --non-interactive
+          npx expo prebuild --platform android
+      - name: Build APK locally
+        script: |
+          cd android && ./gradlew assembleRelease
     artifacts:
-      - build/**/*.apk
-      - "*.apk"
+      - android/app/build/outputs/apk/release/*.apk
       
